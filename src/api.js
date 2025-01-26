@@ -123,7 +123,7 @@ class JoblyApi {
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { "Content-Type": "application/json" };
 
-    // 🔹 Only attach Authorization header if there is a token and it's NOT a login request
+    // ✅ Ensure login does NOT send an Authorization header
     if (JoblyApi.token && endpoint !== "auth/token") {
       headers.Authorization = `Bearer ${JoblyApi.token}`;
     }
@@ -131,8 +131,9 @@ class JoblyApi {
     const params = method === "get" ? data : {};
 
     try {
+      console.debug("Sending Request:", { url, method, data, params, headers });
       const response = await axios({ url, method, data, params, headers });
-      console.log("API Response:", response.data);
+      console.debug("API Response:", response.data);
       return response.data;
     } catch (err) {
       console.error("API Error:", err.response ? err.response.data : err.message);
@@ -140,10 +141,12 @@ class JoblyApi {
     }
   }
 
-  // FIXED: Ensure login request does NOT send an Authorization header
+  // ✅ Debugging login request
   static async login(username, password) {
+    console.debug("🔵 Attempting login with:", { username, password });
     let res = await this.request("auth/token", { username, password }, "post");
-    JoblyApi.token = res.token; // Save token for future requests
+    console.debug("🟢 Login Successful, Token:", res.token);
+    JoblyApi.token = res.token;
     return res.token;
   }
 }
