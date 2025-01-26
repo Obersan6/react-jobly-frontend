@@ -2,20 +2,20 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../UserContext";
-import "../components/Navigation.css"; // Import the centered styles
+import "../components/Navigation.css";
 
 function Navigation({ logout }) {
   const { currentUser } = useContext(UserContext);
 
   return (
     <nav className="Navigation">
-      <div className="nav-auth">
+      <div className="nav-links">
         <NavLink to="/" className="nav-link">Home</NavLink>
-        <NavLink to="/companies" className="nav-link">Companies</NavLink>
-        <NavLink to="/jobs" className="nav-link">Jobs</NavLink>
 
         {currentUser ? (
           <>
+            <NavLink to="/companies" className="nav-link">Companies</NavLink>
+            <NavLink to="/jobs" className="nav-link">Jobs</NavLink>
             <NavLink to="/profile" className="nav-link">Profile</NavLink>
             <button onClick={logout} className="nav-button">Logout</button>
           </>

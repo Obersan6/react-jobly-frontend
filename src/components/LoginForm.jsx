@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import JoblyApi from "../api";
 import { useNavigate } from "react-router-dom";
@@ -10,13 +11,18 @@ function LoginForm({ login }) {
   async function handleSubmit(evt) {
     evt.preventDefault();
     try {
-      let token = await JoblyApi.login(formData.username, formData.password);
-      login(token);
-      navigate("/");
+      let result = await login(formData);
+      if (result.success) {
+        navigate("/");
+      } else {
+        setError("Login failed: " + (result.err || "Invalid credentials"));
+      }
     } catch (err) {
-      setError(err);
+      console.error("Login error:", err);
+      setError("Invalid username/password");
     }
   }
+  
 
   return (
     <div>
@@ -36,6 +42,4 @@ function LoginForm({ login }) {
 }
 
 export default LoginForm;
-
-
 

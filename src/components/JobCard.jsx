@@ -1,13 +1,19 @@
-import { useState, useContext } from "react";
+
+import { useState, useEffect, useContext } from "react";
 import JoblyApi from "../api";
 import UserContext from "../UserContext";
 
 function JobCard({ job }) {
   const { currentUser } = useContext(UserContext);
-  const [applied, setApplied] = useState(() => {
-    return currentUser?.appliedJobs?.includes(job.id);
-  });
+  const [applied, setApplied] = useState(false);
 
+  /** Load applied jobs from localStorage */
+  useEffect(() => {
+    const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs")) || [];
+    setApplied(appliedJobs.includes(job.id));
+  }, [job.id]);
+
+  /** Apply for a job */
   async function apply() {
     if (applied) return;
     try {
@@ -36,4 +42,3 @@ function JobCard({ job }) {
 }
 
 export default JobCard;
-

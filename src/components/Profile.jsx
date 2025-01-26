@@ -1,3 +1,4 @@
+
 import { useState, useContext } from "react";
 import JoblyApi from "../api";
 import UserContext from "../UserContext";
@@ -55,6 +56,3 @@ function Profile() {
 }
 
 export default Profile;
-
-
-

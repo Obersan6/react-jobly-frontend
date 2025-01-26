@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:3001";
@@ -57,12 +58,21 @@ class JoblyApi {
     return res.jobs;
   }
 
-  /** Login user and return token */
-  static async login(username, password) {
+  //** Login user and return token */
+static async login(username, password) {
+  console.log("Attempting login:", { username, password }); // Debugging log
+  try {
     let res = await this.request("auth/token", { username, password }, "post");
+    console.log("Login successful:", res.token); // Debugging log
     JoblyApi.setToken(res.token);
     return res.token;
+  } catch (err) {
+    console.error("API Login Error:", err);
+    throw err;
   }
+}
+
+
 
   /** Signup new user and return token */
   static async signup(userData) {
